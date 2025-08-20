@@ -1,5 +1,4 @@
-
-// Typing Animation
+// Typing Animation (already in place)
 const textArray = ["Developer", "Discord Bot Maker", "API Builder", "Roblox Scripter", "Automation Enthusiast"];
 let typingText = document.querySelector(".typing-text");
 let i = 0, j = 0, currentText = "", isDeleting = false;
@@ -16,7 +15,7 @@ function type() {
 
     if (j === textArray[i].length) {
       isDeleting = true;
-      setTimeout(type, 1000); // pause at full word
+      setTimeout(type, 1000); 
       return;
     } else if (isDeleting && j === 0) {
       isDeleting = false;
@@ -27,3 +26,19 @@ function type() {
   setTimeout(type, isDeleting ? 50 : 100);
 }
 document.addEventListener("DOMContentLoaded", type);
+
+// Timeline Scroll Reveal
+const timelineItems = document.querySelectorAll(".timeline-item");
+
+function revealTimeline() {
+  const triggerBottom = window.innerHeight * 0.85;
+  timelineItems.forEach(item => {
+    const itemTop = item.getBoundingClientRect().top;
+    if (itemTop < triggerBottom) {
+      item.classList.add("visible");
+    }
+  });
+}
+
+window.addEventListener("scroll", revealTimeline);
+document.addEventListener("DOMContentLoaded", revealTimeline);
