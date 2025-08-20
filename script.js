@@ -1,44 +1,47 @@
-// Typing Animation (already in place)
-const textArray = ["Developer", "Discord Bot Maker", "API Builder", "Roblox Scripter", "Automation Enthusiast"];
-let typingText = document.querySelector(".typing-text");
-let i = 0, j = 0, currentText = "", isDeleting = false;
+// Typing effect for hero section
+const typingText = document.querySelector('.typing-text');
+const texts = ["Developer", "Discord Bot Creator", "Roblox Scripter", "Automation Enthusiast"];
+let textIndex = 0;
+let charIndex = 0;
 
 function type() {
-  if (i < textArray.length) {
-    if (!isDeleting && j <= textArray[i].length) {
-      currentText = textArray[i].substring(0, j++);
-      typingText.textContent = currentText;
-    } else if (isDeleting && j >= 0) {
-      currentText = textArray[i].substring(0, j--);
-      typingText.textContent = currentText;
-    }
-
-    if (j === textArray[i].length) {
-      isDeleting = true;
-      setTimeout(type, 1000); 
-      return;
-    } else if (isDeleting && j === 0) {
-      isDeleting = false;
-      i++;
-      if (i === textArray.length) i = 0;
-    }
+  if (charIndex < texts[textIndex].length) {
+    typingText.textContent += texts[textIndex].charAt(charIndex);
+    charIndex++;
+    setTimeout(type, 150);
+  } else {
+    setTimeout(erase, 1500);
   }
-  setTimeout(type, isDeleting ? 50 : 100);
 }
-document.addEventListener("DOMContentLoaded", type);
 
-// Timeline Scroll Reveal
-const timelineItems = document.querySelectorAll(".timeline-item");
+function erase() {
+  if (charIndex > 0) {
+    typingText.textContent = texts[textIndex].substring(0, charIndex - 1);
+    charIndex--;
+    setTimeout(erase, 100);
+  } else {
+    textIndex = (textIndex + 1) % texts.length;
+    setTimeout(type, 500);
+  }
+}
 
-function revealTimeline() {
+document.addEventListener("DOMContentLoaded", () => {
+  setTimeout(type, 1000); // start typing after 1s
+});
+
+// Timeline scroll animation
+const timelineItems = document.querySelectorAll('.timeline-item');
+
+function checkTimeline() {
   const triggerBottom = window.innerHeight * 0.85;
+
   timelineItems.forEach(item => {
     const itemTop = item.getBoundingClientRect().top;
     if (itemTop < triggerBottom) {
-      item.classList.add("visible");
+      item.classList.add('visible');
     }
   });
 }
 
-window.addEventListener("scroll", revealTimeline);
-document.addEventListener("DOMContentLoaded", revealTimeline);
+window.addEventListener('scroll', checkTimeline);
+window.addEventListener('load', checkTimeline);
